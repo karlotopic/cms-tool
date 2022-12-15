@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  UserId   Int    @id @default(autoincrement())
+  Username String @unique
+  Password String
+}
+
+model Checkpoint {
+  CheckpointID Int              @id @default(autoincrement())
+  Latitude     Int
+  Longitude    Int
+  Category     String
+  Info         CheckPointInfo[]
+}
+
+model CheckPointInfo {
+  id           Int         @id @default(autoincrement())
+  Year         Int
+  Description  String
+  Topic        String
+  CheckpointID Int?
+  Checkpoint   Checkpoint? @relation(fields: [CheckpointID], references: [CheckpointID])
+}
